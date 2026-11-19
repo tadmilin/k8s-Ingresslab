@@ -1,0 +1,39 @@
+# collected 2026-11-19 08:56:13
+
+$ minikube version
+minikube version: v1.38.1
+commit: c93a4cb9311efc66b90d33ea03f75f2c4120e9b0
+
+$ minikube status
+minikube
+type: Control Plane
+host: Running
+kubelet: Running
+apiserver: Running
+kubeconfig: Configured
+
+$ minikube ip
+192.168.253.132
+
+$ kubectl version
+Client Version: v1.35.1
+Kustomize Version: v5.7.1
+Server Version: v1.35.1
+
+$ kubectl get nodes -o wide
+NAME       STATUS   ROLES           AGE   VERSION   INTERNAL-IP       EXTERNAL-IP   OS-IMAGE            KERNEL-VERSION   CONTAINER-RUNTIME
+minikube   Ready    control-plane   59d   v1.35.1   192.168.253.132   <none>        Buildroot 2025.02   6.6.95           docker://28.5.2
+
+$ kubectl get ingressclass
+NAME    CONTROLLER             PARAMETERS   AGE
+nginx   k8s.io/ingress-nginx   <none>       24m
+
+$ kubectl get pods,svc -n ingress-nginx -o wide
+NAME                                            READY   STATUS      RESTARTS   AGE   IP            NODE       NOMINATED NODE   READINESS GATES
+pod/ingress-nginx-admission-create-wjmtm        0/1     Completed   0          24m   10.244.0.84   minikube   <none>           <none>
+pod/ingress-nginx-admission-patch-mtmqb         0/1     Completed   0          24m   10.244.0.85   minikube   <none>           <none>
+pod/ingress-nginx-controller-596f8778bc-94xr2   1/1     Running     0          24m   10.244.0.86   minikube   <none>           <none>
+
+NAME                                         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE   SELECTOR
+service/ingress-nginx-controller             NodePort    10.104.136.57   <none>        80:31003/TCP,443:32600/TCP   24m   app.kubernetes.io/component=controller,app.kubernetes.io/instance=ingress-nginx,app.kubernetes.io/name=ingress-nginx
+service/ingress-nginx-controller-admission   ClusterIP   10.97.56.213    <none>        443/TCP                      24m   app.kubernetes.io/component=controller,app.kubernetes.io/instance=ingress-nginx,app.kubernetes.io/name=ingress-nginx

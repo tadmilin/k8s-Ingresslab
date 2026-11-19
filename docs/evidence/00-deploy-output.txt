@@ -1,0 +1,41 @@
+# output of deploy.cmd on 2026-11-19 (first deploy; the kubectl get listing at the end of the script is in 02-get.txt)
+
+$ minikube addons enable ingress
+💡  ingress is an addon maintained by Kubernetes. For any concerns contact minikube on GitHub.
+You can view the list of minikube maintainers at: https://github.com/kubernetes/minikube/blob/master/OWNERS
+    ▪ Using image registry.k8s.io/ingress-nginx/controller:v1.14.3
+    ▪ Using image registry.k8s.io/ingress-nginx/kube-webhook-certgen:v1.6.7
+    ▪ Using image registry.k8s.io/ingress-nginx/kube-webhook-certgen:v1.6.7
+🔎  Verifying ingress addon...
+🌟  The 'ingress' addon is enabled
+
+$ kubectl wait --namespace ingress-nginx --for=condition=ready pod --selector=app.kubernetes.io/component=controller --timeout=180s
+pod/ingress-nginx-controller-596f8778bc-94xr2 condition met
+
+$ kubectl apply -k .
+namespace/id624 created
+configmap/about-code-htbddffdtc created
+configmap/api-code-g7kfbk8c69 created
+configmap/research-code-57c79d99hg created
+configmap/research-seed-f4mgf5h9kk created
+service/app-about created
+service/app-api created
+service/app-research created
+persistentvolumeclaim/research-data created
+deployment.apps/app-about created
+deployment.apps/app-api created
+deployment.apps/app-research created
+ingress.networking.k8s.io/id624-admin created
+ingress.networking.k8s.io/id624-www created
+
+$ kubectl wait --namespace id624 --for=condition=available deployment --all --timeout=180s
+deployment.apps/app-about condition met
+deployment.apps/app-api condition met
+deployment.apps/app-research condition met
+
+# A later `kubectl apply -k .` (after adding HEAD support to apps/common.py) printed:
+#   configmap/about-code-7tgkgk996k created, configmap/api-code-gbhm56f66b created,
+#   configmap/research-code-bt268h2g26 created, deployment.apps/app-about configured (and app-api, app-research),
+#   all other objects unchanged. The Pods were replaced by a rolling update; the three old ConfigMaps were deleted.
+# One more apply (editor textarea made shorter, apps/research/app.py) created configmap/research-code-2fc52td2k7
+#   and rolled only app-research; the old research-code ConfigMap was deleted. The data on the PVC was not touched.

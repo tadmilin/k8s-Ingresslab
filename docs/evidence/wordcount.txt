@@ -1,0 +1,4 @@
+# word count of apps/research/research.txt
+method: PyThaiNLP 5.4.0, word_tokenize(engine="newmm"), tokens containing a Thai letter, Latin letter or digit
+words: 435
+characters (with spaces and newlines): 2058

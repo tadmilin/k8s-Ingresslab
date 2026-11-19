@@ -1,0 +1,152 @@
+{
+  "term-get": {
+    "file": "term-get.png",
+    "kind": "terminal",
+    "label": "kubectl get: node, Pod, Service, Deployment, Ingress, PVC, ConfigMap",
+    "cmds": [
+      "minikube status",
+      "kubectl get nodes -o wide",
+      "kubectl get deploy,pods,svc,ingress,pvc -n id624 -o wide"
+    ],
+    "time": "2026-11-19 08:53:10"
+  },
+  "term-describe-ingress": {
+    "file": "term-describe-ingress.png",
+    "kind": "terminal",
+    "label": "kubectl describe ingress",
+    "cmds": [
+      "kubectl describe ingress -n id624"
+    ],
+    "time": "2026-11-19 08:53:18"
+  },
+  "term-describe-svc": {
+    "file": "term-describe-svc.png",
+    "kind": "terminal",
+    "label": "kubectl describe svc, endpoints and PVC",
+    "cmds": [
+      "kubectl describe svc -n id624",
+      "kubectl get endpoints -n id624",
+      "kubectl describe pvc research-data -n id624"
+    ],
+    "time": "2026-11-19 08:53:21"
+  },
+  "term-describe-deploy": {
+    "file": "term-describe-deploy.png",
+    "kind": "terminal",
+    "label": "kubectl describe deployment app-research",
+    "cmds": [
+      "kubectl describe deploy app-research -n id624"
+    ],
+    "time": "2026-11-19 08:53:25"
+  },
+  "term-curl": {
+    "file": "term-curl.png",
+    "kind": "terminal",
+    "label": "curl tests with the host name mapped to the minikube IP",
+    "cmds": [
+      "$ip = minikube ip; $h = \"--resolve\",\"www.id-624.com:80:$ip\",\"--resolve\",\"admin.id-624.com:80:$ip\"",
+      "foreach ($u in 'http://www.id-624.com/','http://www.id-624.com/about','http://www.id-624.com/about/photo.jpg','http://www.id-624.com/research','http://www.id-624.com/api/hello','http://www.id-624.com/api/%E0%B8%AA%E0%B8%A7%E0%B8%B1%E0%B8%AA%E0%B8%94%E0%B8%B5%20K8s','http://www.id-624.com/api/%3Cb%3Ehi%3C%2Fb%3E','http://www.id-624.com/api','http://www.id-624.com/edit','http://admin.id-624.com/','http://admin.id-624.com/edit') { curl.exe -s -o NUL -w \"%{http_code}  %{content_type}  %{size_download}B  $u  %{redirect_url}`n\" @h $u }"
+    ],
+    "time": "2026-11-19 08:53:29"
+  },
+  "term-curl-security": {
+    "file": "term-curl-security.png",
+    "kind": "terminal",
+    "label": "HEAD request, security headers, HTML escaping",
+    "cmds": [
+      "$ip = minikube ip; $h = \"--resolve\",\"www.id-624.com:80:$ip\",\"--resolve\",\"admin.id-624.com:80:$ip\"",
+      "curl.exe -sI @h http://www.id-624.com/about",
+      "curl.exe -s @h http://www.id-624.com/api/%3Cb%3Ehi%3C%2Fb%3E | sls '<main[^>]*>.*?</main>' | % { $_.Matches.Value }"
+    ],
+    "time": "2026-11-19 08:53:34"
+  },
+  "term-lb": {
+    "file": "term-lb.png",
+    "kind": "terminal",
+    "label": "Load balancing: replies per Pod (8 requests each)",
+    "cmds": [
+      "$ip = minikube ip; $h = \"--resolve\",\"www.id-624.com:80:$ip\",\"--resolve\",\"admin.id-624.com:80:$ip\"",
+      "1..8 | % { curl.exe -s @h http://www.id-624.com/about } | sls 'pod (app-[a-z0-9-]+)' | % { $_.Matches[0].Groups[1].Value } | group -NoElement | ft Count,Name -AutoSize",
+      "1..8 | % { curl.exe -s @h http://www.id-624.com/research } | sls 'pod (app-[a-z0-9-]+)' | % { $_.Matches[0].Groups[1].Value } | group -NoElement | ft Count,Name -AutoSize",
+      "1..8 | % { curl.exe -s @h http://www.id-624.com/api/x } | sls 'pod (app-[a-z0-9-]+)' | % { $_.Matches[0].Groups[1].Value } | group -NoElement | ft Count,Name -AutoSize"
+    ],
+    "time": "2026-11-19 08:53:37"
+  },
+  "chrome-about": {
+    "file": "chrome-about.png",
+    "kind": "chrome",
+    "label": "www.id-624.com/about : app-about shows the photo, name and ID",
+    "url": "http://www.id-624.com/about",
+    "time": "2026-11-19 08:53:45"
+  },
+  "chrome-research": {
+    "file": "chrome-research.png",
+    "kind": "chrome",
+    "label": "www.id-624.com/research : app-research shows the summary",
+    "url": "http://www.id-624.com/research",
+    "time": "2026-11-19 08:53:46"
+  },
+  "chrome-api-1": {
+    "file": "chrome-api-1.png",
+    "kind": "chrome",
+    "label": "www.id-624.com/api/สวัสดี K8s : app-api shows the text big and centred",
+    "url": "http://www.id-624.com/api/%E0%B8%AA%E0%B8%A7%E0%B8%B1%E0%B8%AA%E0%B8%94%E0%B8%B5%20K8s",
+    "time": "2026-11-19 08:53:48"
+  },
+  "chrome-api-2": {
+    "file": "chrome-api-2.png",
+    "kind": "chrome",
+    "label": "www.id-624.com/api/<b>hi</b> : HTML is escaped, shown as plain text",
+    "url": "http://www.id-624.com/api/%3Cb%3Ehi%3C/b%3E",
+    "time": "2026-11-19 08:53:49"
+  },
+  "chrome-admin-1": {
+    "file": "chrome-admin-1.png",
+    "kind": "chrome",
+    "label": "admin.id-624.com : redirected to /edit, the editor of app-research",
+    "url": "http://admin.id-624.com/edit",
+    "time": "2026-11-19 08:53:51"
+  },
+  "chrome-admin-2": {
+    "file": "chrome-admin-2.png",
+    "kind": "chrome",
+    "label": "typed '[admin-edit-8421]' in front of the title (not saved yet)",
+    "url": "http://admin.id-624.com/edit",
+    "time": "2026-11-19 08:53:52"
+  },
+  "chrome-admin-3": {
+    "file": "chrome-admin-3.png",
+    "kind": "chrome",
+    "label": "after Save: the editor shows 'บันทึกแล้ว'",
+    "url": "http://admin.id-624.com/edit?saved=1",
+    "time": "2026-11-19 08:53:54"
+  },
+  "chrome-research-edited": {
+    "file": "chrome-research-edited.png",
+    "kind": "chrome",
+    "label": "www.id-624.com/research : the new title appears at once",
+    "url": "http://www.id-624.com/research",
+    "time": "2026-11-19 08:53:56"
+  },
+  "term-persist": {
+    "file": "term-persist.png",
+    "kind": "terminal",
+    "label": "Persistence: delete both app-research Pods, the edit stays",
+    "cmds": [
+      "$ip = minikube ip; $h = \"--resolve\",\"www.id-624.com:80:$ip\",\"--resolve\",\"admin.id-624.com:80:$ip\"",
+      "kubectl get pods -n id624 -l app=app-research",
+      "kubectl delete pod -n id624 -l app=app-research",
+      "kubectl wait -n id624 --for=condition=ready pod -l app=app-research --timeout=120s",
+      "kubectl get pods -n id624 -l app=app-research",
+      "curl.exe -s @h http://www.id-624.com/research | sls 'admin-edit-\\d+' | % { $_.Matches.Value }"
+    ],
+    "time": "2026-11-19 08:53:56"
+  },
+  "chrome-research-restart": {
+    "file": "chrome-research-restart.png",
+    "kind": "chrome",
+    "label": "www.id-624.com/research : still edited after the Pods were recreated",
+    "url": "http://www.id-624.com/research",
+    "time": "2026-11-19 08:54:34"
+  }
+}

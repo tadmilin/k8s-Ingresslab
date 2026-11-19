@@ -1,0 +1,40 @@
+# collected 2026-11-19 08:56:20
+
+$ kubectl describe ingress -n id624
+Name:             id624-admin
+Labels:           <none>
+Namespace:        id624
+Address:          192.168.253.132
+Ingress Class:    nginx
+Default backend:  <default>
+Rules:
+  Host              Path  Backends
+  ----              ----  --------
+  admin.id-624.com  
+                    /   app-research:80 (10.244.0.103:8080,10.244.0.104:8080)
+Annotations:        nginx.ingress.kubernetes.io/app-root: /edit
+Events:
+  Type    Reason  Age                From                      Message
+  ----    ------  ----               ----                      -------
+  Normal  Sync    15m (x2 over 16m)  nginx-ingress-controller  Scheduled for sync
+
+
+Name:             id624-www
+Labels:           <none>
+Namespace:        id624
+Address:          192.168.253.132
+Ingress Class:    nginx
+Default backend:  <default>
+Rules:
+  Host            Path  Backends
+  ----            ----  --------
+  www.id-624.com  
+                  /about      app-about:80 (10.244.0.93:8080,10.244.0.96:8080)
+                  /research   app-research:80 (10.244.0.103:8080,10.244.0.104:8080)
+                  /api        app-api:80 (10.244.0.94:8080,10.244.0.97:8080)
+                  /           app-about:80 (10.244.0.93:8080,10.244.0.96:8080)
+Annotations:      <none>
+Events:
+  Type    Reason  Age                From                      Message
+  ----    ------  ----               ----                      -------
+  Normal  Sync    15m (x2 over 16m)  nginx-ingress-controller  Scheduled for sync

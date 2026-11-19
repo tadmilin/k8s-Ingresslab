@@ -1,0 +1,148 @@
+# collected 2026-11-19 08:56:20
+
+$ kubectl describe svc -n id624
+Name:                     app-about
+Namespace:                id624
+Labels:                   <none>
+Annotations:              <none>
+Selector:                 app=app-about
+Type:                     ClusterIP
+IP Family Policy:         SingleStack
+IP Families:              IPv4
+IP:                       10.101.122.170
+IPs:                      10.101.122.170
+Port:                     <unset>  80/TCP
+TargetPort:               8080/TCP
+Endpoints:                10.244.0.93:8080,10.244.0.96:8080
+Session Affinity:         None
+Internal Traffic Policy:  Cluster
+Events:                   <none>
+
+
+Name:                     app-api
+Namespace:                id624
+Labels:                   <none>
+Annotations:              <none>
+Selector:                 app=app-api
+Type:                     ClusterIP
+IP Family Policy:         SingleStack
+IP Families:              IPv4
+IP:                       10.101.242.98
+IPs:                      10.101.242.98
+Port:                     <unset>  80/TCP
+TargetPort:               8080/TCP
+Endpoints:                10.244.0.94:8080,10.244.0.97:8080
+Session Affinity:         None
+Internal Traffic Policy:  Cluster
+Events:                   <none>
+
+
+Name:                     app-research
+Namespace:                id624
+Labels:                   <none>
+Annotations:              <none>
+Selector:                 app=app-research
+Type:                     ClusterIP
+IP Family Policy:         SingleStack
+IP Families:              IPv4
+IP:                       10.108.182.236
+IPs:                      10.108.182.236
+Port:                     <unset>  80/TCP
+TargetPort:               8080/TCP
+Endpoints:                10.244.0.103:8080,10.244.0.104:8080
+Session Affinity:         None
+Internal Traffic Policy:  Cluster
+Events:                   <none>
+
+$ kubectl describe pvc research-data -n id624
+Name:          research-data
+Namespace:     id624
+StorageClass:  standard
+Status:        Bound
+Volume:        pvc-d1d3ecfe-230c-4b43-aa10-9ec03fe4eb1c
+Labels:        <none>
+Annotations:   pv.kubernetes.io/bind-completed: yes
+               pv.kubernetes.io/bound-by-controller: yes
+               volume.beta.kubernetes.io/storage-provisioner: k8s.io/minikube-hostpath
+               volume.kubernetes.io/storage-provisioner: k8s.io/minikube-hostpath
+Finalizers:    [kubernetes.io/pvc-protection]
+Capacity:      100Mi
+Access Modes:  RWO
+VolumeMode:    Filesystem
+Used By:       app-research-5596f979d6-bdqrv
+               app-research-5596f979d6-ldvmf
+Events:
+  Type    Reason                 Age   From                                                                    Message
+  ----    ------                 ----  ----                                                                    -------
+  Normal  ExternalProvisioning   16m   persistentvolume-controller                                             Waiting for a volume to be created either by the external provisioner 'k8s.io/minikube-hostpath' or manually by the system administrator. If volume creation is delayed, please verify that the provisioner is running and correctly registered.
+  Normal  Provisioning           16m   k8s.io/minikube-hostpath_minikube_815a42f3-ed1b-4a28-a003-46f8881f5ed6  External provisioner is provisioning volume for claim "id624/research-data"
+  Normal  ProvisioningSucceeded  16m   k8s.io/minikube-hostpath_minikube_815a42f3-ed1b-4a28-a003-46f8881f5ed6  Successfully provisioned volume pvc-d1d3ecfe-230c-4b43-aa10-9ec03fe4eb1c
+
+$ kubectl describe deploy app-research -n id624
+Name:                   app-research
+Namespace:              id624
+CreationTimestamp:      Thu, 19 Nov 2026 08:39:56 +0700
+Labels:                 app=app-research
+Annotations:            deployment.kubernetes.io/revision: 3
+Selector:               app=app-research
+Replicas:               2 desired | 2 updated | 2 total | 2 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  app=app-research
+  Containers:
+   app:
+    Image:      python:3.12-alpine
+    Port:       8080/TCP
+    Host Port:  0/TCP
+    Command:
+      python
+      /app/app.py
+    Limits:
+      memory:  64Mi
+    Requests:
+      cpu:      10m
+      memory:   32Mi
+    Readiness:  http-get http://:8080/healthz delay=0s timeout=1s period=10s #success=1 #failure=3
+    Environment:
+      PYTHONDONTWRITEBYTECODE:  1
+      PYTHONUNBUFFERED:         1
+    Mounts:
+      /app from code (ro)
+      /data from data (rw)
+      /seed from seed (ro)
+  Volumes:
+   code:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      research-code-2fc52td2k7
+    Optional:  false
+   seed:
+    Type:      ConfigMap (a volume populated by a ConfigMap)
+    Name:      research-seed-f4mgf5h9kk
+    Optional:  false
+   data:
+    Type:          PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:     research-data
+    ReadOnly:      false
+  Node-Selectors:  <none>
+  Tolerations:     <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Progressing    True    NewReplicaSetAvailable
+  Available      True    MinimumReplicasAvailable
+OldReplicaSets:  app-research-6485c74784 (0/0 replicas created), app-research-c85d668cf (0/0 replicas created)
+NewReplicaSet:   app-research-5596f979d6 (2/2 replicas created)
+Events:
+  Type    Reason             Age    From                   Message
+  ----    ------             ----   ----                   -------
+  Normal  ScalingReplicaSet  16m    deployment-controller  Scaled up replica set app-research-6485c74784 from 0 to 2
+  Normal  ScalingReplicaSet  15m    deployment-controller  Scaled up replica set app-research-c85d668cf from 0 to 1
+  Normal  ScalingReplicaSet  15m    deployment-controller  Scaled down replica set app-research-6485c74784 from 2 to 1
+  Normal  ScalingReplicaSet  15m    deployment-controller  Scaled up replica set app-research-c85d668cf from 1 to 2
+  Normal  ScalingReplicaSet  15m    deployment-controller  Scaled down replica set app-research-6485c74784 from 1 to 0
+  Normal  ScalingReplicaSet  3m35s  deployment-controller  Scaled up replica set app-research-5596f979d6 from 0 to 1
+  Normal  ScalingReplicaSet  3m32s  deployment-controller  Scaled down replica set app-research-c85d668cf from 2 to 1
+  Normal  ScalingReplicaSet  3m32s  deployment-controller  Scaled up replica set app-research-5596f979d6 from 1 to 2
+  Normal  ScalingReplicaSet  3m30s  deployment-controller  Scaled down replica set app-research-c85d668cf from 1 to 0

@@ -1,0 +1,40 @@
+# www.id-624.com: one host, path-based routing to three Services.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: id624-www
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: www.id-624.com
+      http:
+        paths:
+          - path: /about
+            pathType: Prefix
+            backend: {service: {name: app-about, port: {number: 80}}}
+          - path: /research
+            pathType: Prefix
+            backend: {service: {name: app-research, port: {number: 80}}}
+          - path: /api
+            pathType: Prefix
+            backend: {service: {name: app-api, port: {number: 80}}}
+          - path: /          # only "/" itself: app-about redirects it to /about
+            pathType: Exact
+            backend: {service: {name: app-about, port: {number: 80}}}
+---
+# admin.id-624.com: the editor of app-research. "/" is redirected to /edit.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: id624-admin
+  annotations:
+    nginx.ingress.kubernetes.io/app-root: /edit
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: admin.id-624.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend: {service: {name: app-research, port: {number: 80}}}

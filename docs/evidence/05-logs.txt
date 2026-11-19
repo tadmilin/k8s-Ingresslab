@@ -1,0 +1,25 @@
+# collected 2026-11-19 08:56:22
+
+$ kubectl logs deploy/app-about -n id624 --tail=5
+10.244.0.86 - - [19/Nov/2026 01:56:22] "GET /about HTTP/1.1" 200 -
+10.244.0.86 - - [19/Nov/2026 01:56:22] "GET /about HTTP/1.1" 200 -
+10.244.0.86 - - [19/Nov/2026 01:56:22] "GET /about HTTP/1.1" 200 -
+10.244.0.86 - - [19/Nov/2026 01:56:22] "GET /about HTTP/1.1" 200 -
+10.244.0.1 - - [19/Nov/2026 01:56:23] "GET /healthz HTTP/1.1" 200 -
+Found 2 pods, using pod/app-about-75b9c7b66c-pxj72
+
+$ kubectl logs deploy/app-api -n id624 --tail=5
+10.244.0.86 - - [19/Nov/2026 01:56:22] "GET /api/x HTTP/1.1" 200 -
+10.244.0.86 - - [19/Nov/2026 01:56:22] "GET /api/x HTTP/1.1" 200 -
+10.244.0.86 - - [19/Nov/2026 01:56:22] "GET /api/x HTTP/1.1" 200 -
+10.244.0.86 - - [19/Nov/2026 01:56:22] "GET /api/x HTTP/1.1" 200 -
+10.244.0.1 - - [19/Nov/2026 01:56:23] "GET /healthz HTTP/1.1" 200 -
+Found 2 pods, using pod/app-api-67b967749d-9dkd7
+
+$ kubectl logs deploy/app-research -n id624 --tail=5
+10.244.0.86 - - [19/Nov/2026 01:56:23] "GET /research HTTP/1.1" 200 -
+10.244.0.86 - - [19/Nov/2026 01:56:23] "GET /research HTTP/1.1" 200 -
+10.244.0.86 - - [19/Nov/2026 01:56:23] "GET /research HTTP/1.1" 200 -
+10.244.0.86 - - [19/Nov/2026 01:56:23] "GET /research HTTP/1.1" 200 -
+10.244.0.86 - - [19/Nov/2026 01:56:23] "GET /research HTTP/1.1" 200 -
+Found 2 pods, using pod/app-research-5596f979d6-bdqrv

@@ -1,0 +1,21 @@
+# kubectl apply -k .  creates everything in namespace id624.
+# configMapGenerator turns the app source files into ConfigMaps; the pods run them on python:3.12-alpine,
+# so no image build is needed. Editing a file and applying again rolls the pods automatically.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: id624
+resources:
+  - k8s/namespace.yaml
+  - k8s/app-about.yaml
+  - k8s/app-research.yaml
+  - k8s/app-api.yaml
+  - k8s/ingress.yaml
+configMapGenerator:
+  - name: about-code
+    files: [apps/about/app.py, apps/about/photo.jpg, apps/common.py]
+  - name: research-code
+    files: [apps/research/app.py, apps/common.py]
+  - name: research-seed
+    files: [apps/research/research.txt]
+  - name: api-code
+    files: [apps/api/app.py, apps/common.py]

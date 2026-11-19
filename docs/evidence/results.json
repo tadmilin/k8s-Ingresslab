@@ -1,0 +1,150 @@
+{
+  "time": "2026-11-19 08:56:22",
+  "ip": "192.168.253.132",
+  "results": [
+    {
+      "id": "T1",
+      "desc": "www root redirects to /about",
+      "url": "http://www.id-624.com/",
+      "expected": "302 -> /about",
+      "got": "302 -> /about",
+      "ok": true
+    },
+    {
+      "id": "T2",
+      "desc": "/about shows name and ID, app-about",
+      "url": "http://www.id-624.com/about",
+      "expected": "200, 68130624, photo",
+      "got": "200, 1138B",
+      "ok": true
+    },
+    {
+      "id": "T3",
+      "desc": "photo is served unchanged",
+      "url": "http://www.id-624.com/about/photo.jpg",
+      "expected": "200 image/jpeg, same bytes as apps/about/photo.jpg",
+      "got": "200 image/jpeg, 61025B",
+      "ok": true
+    },
+    {
+      "id": "T4",
+      "desc": "/research shows the summary, app-research",
+      "url": "http://www.id-624.com/research",
+      "expected": "200 and the summary title",
+      "got": "200, title found",
+      "ok": true
+    },
+    {
+      "id": "T5",
+      "desc": "/api/<text> shows text big and centred",
+      "url": "http://www.id-624.com/api/hello",
+      "expected": "200, <main class=\"big\">hello</main>",
+      "got": "200",
+      "ok": true
+    },
+    {
+      "id": "T6",
+      "desc": "/api handles Thai and spaces",
+      "url": "http://www.id-624.com/api/%E0%B8%AA...%20K8s",
+      "expected": "200, Thai text unchanged",
+      "got": "200",
+      "ok": true
+    },
+    {
+      "id": "T7",
+      "desc": "/api escapes HTML",
+      "url": "http://www.id-624.com/api/%3Cb%3Ehi%3C%2Fb%3E",
+      "expected": "200, &lt;b&gt;hi&lt;/b&gt;, no raw <b>",
+      "got": "200",
+      "ok": true
+    },
+    {
+      "id": "T8",
+      "desc": "admin root redirects to /edit",
+      "url": "http://admin.id-624.com/",
+      "expected": "302 -> /edit",
+      "got": "302 -> http://admin.id-624.com/edit",
+      "ok": true
+    },
+    {
+      "id": "T9",
+      "desc": "admin /edit shows the editor with the summary",
+      "url": "http://admin.id-624.com/edit",
+      "expected": "200, textarea",
+      "got": "200",
+      "ok": true
+    },
+    {
+      "id": "T10",
+      "desc": "editor is not reachable on the www host",
+      "url": "http://www.id-624.com/edit",
+      "expected": "404",
+      "got": "404",
+      "ok": true
+    },
+    {
+      "id": "T11",
+      "desc": "/api without text gives a hint (404)",
+      "url": "http://www.id-624.com/api",
+      "expected": "404",
+      "got": "404",
+      "ok": true
+    },
+    {
+      "id": "T12",
+      "desc": "HEAD works",
+      "url": "HEAD http://www.id-624.com/about",
+      "expected": "200",
+      "got": "200",
+      "ok": true
+    },
+    {
+      "id": "T13",
+      "desc": "saved text is shown at once by every replica",
+      "url": "POST http://admin.id-624.com/edit",
+      "expected": "303, then 12 reads all show it",
+      "got": "303, reads [1]",
+      "ok": true
+    },
+    {
+      "id": "T14",
+      "desc": "original summary restored after the test",
+      "url": "http://www.id-624.com/research",
+      "expected": "title without marker",
+      "got": "200",
+      "ok": true
+    },
+    {
+      "id": "T15a",
+      "desc": "two replicas answer for app-about",
+      "url": "http://www.id-624.com/about x24",
+      "expected": "2 different Pods",
+      "got": "2: app-about-75b9c7b66c-pxj72, app-about-75b9c7b66c-vj6qj",
+      "ok": true
+    },
+    {
+      "id": "T15b",
+      "desc": "two replicas answer for app-api",
+      "url": "http://www.id-624.com/api/x x24",
+      "expected": "2 different Pods",
+      "got": "2: app-api-67b967749d-22n4n, app-api-67b967749d-9dkd7",
+      "ok": true
+    },
+    {
+      "id": "T15c",
+      "desc": "two replicas answer for app-research",
+      "url": "http://www.id-624.com/research x24",
+      "expected": "2 different Pods",
+      "got": "2: app-research-5596f979d6-bdqrv, app-research-5596f979d6-ldvmf",
+      "ok": true
+    },
+    {
+      "id": "T16",
+      "desc": "all Deployments are available",
+      "url": "kubectl get deploy -n id624",
+      "expected": "2/2 each",
+      "got": "app-about=2/2 app-api=2/2 app-research=2/2",
+      "ok": true
+    }
+  ]
+}
