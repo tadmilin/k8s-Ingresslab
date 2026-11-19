@@ -1,54 +1,54 @@
-# collected 2026-11-19 09:02:11
+# collected 2026-11-19 09:23:13
 
 $ kubectl get all,ingress,pvc,cm -n id624 -o wide
-NAME                                READY   STATUS    RESTARTS   AGE     IP             NODE       NOMINATED NODE   READINESS GATES
-pod/app-about-75b9c7b66c-pxj72      1/1     Running   0          21m     10.244.0.93    minikube   <none>           <none>
-pod/app-about-75b9c7b66c-vj6qj      1/1     Running   0          21m     10.244.0.96    minikube   <none>           <none>
-pod/app-api-67b967749d-22n4n        1/1     Running   0          21m     10.244.0.97    minikube   <none>           <none>
-pod/app-api-67b967749d-9dkd7        1/1     Running   0          21m     10.244.0.94    minikube   <none>           <none>
-pod/app-research-5596f979d6-bdqrv   1/1     Running   0          8m13s   10.244.0.103   minikube   <none>           <none>
-pod/app-research-5596f979d6-ldvmf   1/1     Running   0          8m12s   10.244.0.104   minikube   <none>           <none>
+NAME                                READY   STATUS    RESTARTS   AGE   IP             NODE       NOMINATED NODE   READINESS GATES
+pod/app-about-75b9c7b66c-pxj72      1/1     Running   0          42m   10.244.0.93    minikube   <none>           <none>
+pod/app-about-75b9c7b66c-vj6qj      1/1     Running   0          42m   10.244.0.96    minikube   <none>           <none>
+pod/app-api-67b967749d-22n4n        1/1     Running   0          42m   10.244.0.97    minikube   <none>           <none>
+pod/app-api-67b967749d-9dkd7        1/1     Running   0          42m   10.244.0.94    minikube   <none>           <none>
+pod/app-research-5596f979d6-bdqrv   1/1     Running   0          29m   10.244.0.103   minikube   <none>           <none>
+pod/app-research-5596f979d6-ldvmf   1/1     Running   0          29m   10.244.0.104   minikube   <none>           <none>
 
 NAME                   TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE   SELECTOR
-service/app-about      ClusterIP   10.101.122.170   <none>        80/TCP    22m   app=app-about
-service/app-api        ClusterIP   10.101.242.98    <none>        80/TCP    22m   app=app-api
-service/app-research   ClusterIP   10.108.182.236   <none>        80/TCP    22m   app=app-research
+service/app-about      ClusterIP   10.101.122.170   <none>        80/TCP    43m   app=app-about
+service/app-api        ClusterIP   10.101.242.98    <none>        80/TCP    43m   app=app-api
+service/app-research   ClusterIP   10.108.182.236   <none>        80/TCP    43m   app=app-research
 
 NAME                           READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES               SELECTOR
-deployment.apps/app-about      2/2     2            2           22m   app          python:3.12-alpine   app=app-about
-deployment.apps/app-api        2/2     2            2           22m   app          python:3.12-alpine   app=app-api
-deployment.apps/app-research   2/2     2            2           22m   app          python:3.12-alpine   app=app-research
+deployment.apps/app-about      2/2     2            2           43m   app          python:3.12-alpine   app=app-about
+deployment.apps/app-api        2/2     2            2           43m   app          python:3.12-alpine   app=app-api
+deployment.apps/app-research   2/2     2            2           43m   app          python:3.12-alpine   app=app-research
 
-NAME                                      DESIRED   CURRENT   READY   AGE     CONTAINERS   IMAGES               SELECTOR
-replicaset.apps/app-about-57f8999b64      0         0         0       22m     app          python:3.12-alpine   app=app-about,pod-template-hash=57f8999b64
-replicaset.apps/app-about-75b9c7b66c      2         2         2       21m     app          python:3.12-alpine   app=app-about,pod-template-hash=75b9c7b66c
-replicaset.apps/app-api-5f846bb57c        0         0         0       22m     app          python:3.12-alpine   app=app-api,pod-template-hash=5f846bb57c
-replicaset.apps/app-api-67b967749d        2         2         2       21m     app          python:3.12-alpine   app=app-api,pod-template-hash=67b967749d
-replicaset.apps/app-research-5596f979d6   2         2         2       9m27s   app          python:3.12-alpine   app=app-research,pod-template-hash=5596f979d6
-replicaset.apps/app-research-6485c74784   0         0         0       22m     app          python:3.12-alpine   app=app-research,pod-template-hash=6485c74784
-replicaset.apps/app-research-c85d668cf    0         0         0       21m     app          python:3.12-alpine   app=app-research,pod-template-hash=c85d668cf
+NAME                                      DESIRED   CURRENT   READY   AGE   CONTAINERS   IMAGES               SELECTOR
+replicaset.apps/app-about-57f8999b64      0         0         0       43m   app          python:3.12-alpine   app=app-about,pod-template-hash=57f8999b64
+replicaset.apps/app-about-75b9c7b66c      2         2         2       42m   app          python:3.12-alpine   app=app-about,pod-template-hash=75b9c7b66c
+replicaset.apps/app-api-5f846bb57c        0         0         0       43m   app          python:3.12-alpine   app=app-api,pod-template-hash=5f846bb57c
+replicaset.apps/app-api-67b967749d        2         2         2       42m   app          python:3.12-alpine   app=app-api,pod-template-hash=67b967749d
+replicaset.apps/app-research-5596f979d6   2         2         2       30m   app          python:3.12-alpine   app=app-research,pod-template-hash=5596f979d6
+replicaset.apps/app-research-6485c74784   0         0         0       43m   app          python:3.12-alpine   app=app-research,pod-template-hash=6485c74784
+replicaset.apps/app-research-c85d668cf    0         0         0       42m   app          python:3.12-alpine   app=app-research,pod-template-hash=c85d668cf
 
 NAME                                    CLASS   HOSTS              ADDRESS           PORTS   AGE
-ingress.networking.k8s.io/id624-admin   nginx   admin.id-624.com   192.168.253.132   80      22m
-ingress.networking.k8s.io/id624-www     nginx   www.id-624.com     192.168.253.132   80      22m
+ingress.networking.k8s.io/id624-admin   nginx   admin.id-624.com   192.168.253.132   80      43m
+ingress.networking.k8s.io/id624-www     nginx   www.id-624.com     192.168.253.132   80      43m
 
 NAME                                  STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE   VOLUMEMODE
-persistentvolumeclaim/research-data   Bound    pvc-d1d3ecfe-230c-4b43-aa10-9ec03fe4eb1c   100Mi      RWO            standard       <unset>                 22m   Filesystem
+persistentvolumeclaim/research-data   Bound    pvc-d1d3ecfe-230c-4b43-aa10-9ec03fe4eb1c   100Mi      RWO            standard       <unset>                 43m   Filesystem
 
 NAME                                 DATA   AGE
-configmap/about-code-7tgkgk996k      3      21m
-configmap/api-code-gbhm56f66b        2      21m
-configmap/kube-root-ca.crt           1      22m
-configmap/research-code-2fc52td2k7   2      9m28s
-configmap/research-seed-f4mgf5h9kk   1      22m
+configmap/about-code-7tgkgk996k      3      42m
+configmap/api-code-gbhm56f66b        2      42m
+configmap/kube-root-ca.crt           1      43m
+configmap/research-code-2fc52td2k7   2      30m
+configmap/research-seed-f4mgf5h9kk   1      43m
 
 $ kubectl get endpoints -n id624
 NAME           ENDPOINTS                             AGE
-app-about      10.244.0.93:8080,10.244.0.96:8080     22m
-app-api        10.244.0.94:8080,10.244.0.97:8080     22m
-app-research   10.244.0.103:8080,10.244.0.104:8080   22m
+app-about      10.244.0.93:8080,10.244.0.96:8080     43m
+app-api        10.244.0.94:8080,10.244.0.97:8080     43m
+app-research   10.244.0.103:8080,10.244.0.104:8080   43m
 Warning: v1 Endpoints is deprecated in v1.33+; use discovery.k8s.io/v1 EndpointSlice
 
 $ kubectl get pv
 NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                 STORAGECLASS   VOLUMEATTRIBUTESCLASS   REASON   AGE
-pvc-d1d3ecfe-230c-4b43-aa10-9ec03fe4eb1c   100Mi      RWO            Delete           Bound    id624/research-data   standard       <unset>                          22m
+pvc-d1d3ecfe-230c-4b43-aa10-9ec03fe4eb1c   100Mi      RWO            Delete           Bound    id624/research-data   standard       <unset>                          43m

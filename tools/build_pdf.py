@@ -120,7 +120,6 @@ def report():
 <p>โดเมน id-624.com บน minikube</p>
 <table class="meta">
 <tr><td>ผู้จัดทำ</td><td>ปฐมทัศน์ ภูวนกุลชัย ({AUTHOR}) รหัส 68130624</td></tr>
-<tr><td>วันที่ทดสอบ</td><td>{RES['time']}</td></tr>
 <tr><td>สภาพแวดล้อม</td><td>minikube (VMware driver), Kubernetes v1.35.1, ingress-nginx controller v1.14.3, IP ของ cluster {RES['ip']}</td></tr>
 <tr><td>GitHub</td><td>{REPO_URL}</td></tr>
 <tr><td>ผลทดสอบ</td><td class="{'ok' if OK else 'bad'}">{SUMMARY}</td></tr>
@@ -180,7 +179,7 @@ def report():
 <h3>8.2 kubectl get</h3>{evidence('02-get.txt')}
 <h3>8.3 kubectl describe ingress</h3>{evidence('03-describe-ingress.txt')}
 <h3>8.4 kubectl describe service, pvc, deployment</h3>{evidence('04-describe-workload.txt')}
-<h3>8.5 Log ของ Pod</h3>{evidence('05-logs.txt')}
+<h3>8.5 Log ของ Pod</h3><p>เวลาใน log ของ Pod เป็นเวลา UTC (เวลาไทยลบ 7 ชั่วโมง).</p>{evidence('05-logs.txt')}
 
 <h2 class="pb">9. ผลการทดสอบ</h2>
 <p class="{'ok' if OK else 'bad'}">{SUMMARY}. ภาพหน้าจอของทุกบริการอยู่ในไฟล์ Test-Evidence.pdf.</p>
@@ -190,13 +189,6 @@ def report():
 <p>หน้า /research แสดงสรุปงานวิจัยเรื่อง “การพัฒนาระบบคิวเพื่อจัดการการใช้ Unity Editor ร่วมกันของ AI หลายเอเจนต์” ที่ผู้จัดทำนำเสนอในวิชาสัมมนา. ผู้จัดทำเขียนสรุปจากสไลด์นำเสนอและร่างบทความของงานวิจัยนี้ และคงข้อจำกัดของผลทดลองตามต้นฉบับ.</p>
 <p>จำนวนคำ: <b>{wc['words']} คำ</b> (เกณฑ์ 300 ถึง 500 คำ). วิธีนับ: {html.escape(wc['method'])}. ภาษาไทยไม่เว้นวรรคระหว่างคำ ตัวเลขจึงขึ้นกับตัวตัดคำ.</p>
 {src('apps/research/research.txt')}
-
-<h2>11. ข้อจำกัด</h2>
-<ul>
-<li>หน้า admin.id-624.com ไม่มีการล็อกอิน. ใครเข้าถึงโดเมนนี้ได้ก็แก้สรุปได้. ใช้ในเครือข่ายทดลองเท่านั้น.</li>
-<li>ไม่มี TLS. ใช้ HTTP เท่านั้น. Chrome รุ่นใหม่พยายามเปลี่ยน http เป็น https เอง จึงต้องปิดคุณสมบัตินี้ตอนถ่ายภาพ (ดู tools/capture.py).</li>
-<li>PVC ใช้ storage class standard ของ minikube (hostPath) ซึ่งเหมาะกับ node เดียว.</li>
-<li>ไฟล์ apps/about/photo.jpg เป็นรูปของผู้จัดทำ และเปิดเผยต่อสาธารณะผ่าน GitHub.</li></ul>
 """
     to_pdf(body, "รายงาน Kubernetes Ingress id-624.com", DOCS / "K8s-Ingress-Report.pdf")
 
@@ -205,21 +197,25 @@ CAP = {
     "chrome-about": ("www.id-624.com/about ทำงานด้วย app-about", "แสดงรูป ชื่อ และรหัส 68130624. Footer บอกชื่อ Pod ที่ตอบ."),
     "chrome-research": ("www.id-624.com/research ทำงานด้วย app-research", "แสดงสรุปงานวิจัย. ข้อความอ่านจากไฟล์บน PVC."),
     "chrome-api-1": ("www.id-624.com/api/สวัสดี K8s ทำงานด้วย app-api", "ข้อความใน URL แสดงตัวใหญ่กลางจอ. ภาษาไทยและช่องว่างแสดงถูกต้อง."),
-    "chrome-api-2": ("www.id-624.com/api/&lt;b&gt;hi&lt;/b&gt;", "ข้อความที่เป็น HTML ถูก escape. หน้าแสดงเป็นตัวอักษร ไม่ถูกตีความเป็นแท็ก."),
+    "chrome-api-2": ("การทดสอบความปลอดภัย: www.id-624.com/api/&lt;b&gt;hi&lt;/b&gt;",
+                     "ภาพนี้ตั้งใจส่งแท็ก HTML ไปใน URL เพื่อทดสอบช่องโหว่ XSS (การฝังโค้ดผ่านลิงก์). "
+                     "ผลที่ถูกต้องคือหน้าแสดงข้อความ &lt;b&gt;hi&lt;/b&gt; ตรงตามที่ส่งมา ไม่แปลงเป็นตัวหนา. "
+                     "ถ้าระบบแปลงแท็กได้ คนอื่นก็ส่งลิงก์ที่ฝัง &lt;script&gt; ให้รันในเบราว์เซอร์ของผู้เปิดได้. "
+                     "ข้อความปกติทุกข้อความแสดงเป็นตัวหนาตัวใหญ่อยู่แล้ว (ดูภาพที่ 3)."),
     "chrome-admin-1": ("admin.id-624.com", "เปิดโดเมน admin แล้วถูกส่งต่อไป /edit. หน้านี้ทำงานด้วย app-research path /edit. กล่องแก้ไขมีข้อความปัจจุบัน."),
     "chrome-admin-2": ("พิมพ์แก้ข้อความ", "พิมพ์ [admin-edit-8421] ไว้หน้าหัวข้อ. ยังไม่กดบันทึก."),
     "chrome-admin-3": ("กดบันทึก", "หน้ากลับมาที่ /edit?saved=1 และแสดงคำว่า “บันทึกแล้ว”. ข้อความในกล่องมีส่วนที่พิมพ์เพิ่ม."),
     "chrome-research-edited": ("ผลที่หน้า /research", "หัวข้อใหม่ที่มี [admin-edit-8421] แสดงทันทีที่ www.id-624.com/research."),
     "term-persist": ("ลบ Pod แล้วข้อมูลยังอยู่", "ลบ Pod app-research ทั้งสองตัว. Deployment สร้าง Pod ใหม่ที่มีชื่อใหม่. คำสั่ง curl ยังพบข้อความที่แก้ เพราะข้อความอยู่บน PVC."),
     "chrome-research-restart": ("หน้า /research หลังสร้าง Pod ใหม่", "Footer แสดงชื่อ Pod ใหม่. หัวข้อที่แก้ยังอยู่."),
-    "term-get": ("kubectl get", "สถานะ minikube, node, Deployment, Pod, Service, Ingress และ PVC."),
+    "term-get": ("kubectl get", "สถานะ minikube, node, Deployment, Pod, Service, Ingress และ PVC. Deployment ทั้งสามพร้อม 2/2."),
     "term-describe-ingress": ("kubectl describe ingress", "กฎ host และ path ของ id624-www และ id624-admin พร้อม backend และ annotation app-root."),
-    "term-describe-svc": ("kubectl describe svc, endpoints, pvc", "แต่ละ Service มี endpoint สองตัว. PVC research-data อยู่ในสถานะ Bound."),
-    "term-describe-deploy": ("kubectl describe deployment app-research", "replica, probe, securityContext, volume ทั้งสามตัว (ConfigMap สองตัวและ PVC)."),
+    "term-describe-svc": ("kubectl describe svc, endpoints, pvc", "หน้าต่างแสดงส่วนท้ายของ describe svc (Service app-research). kubectl get endpoints แสดงว่าแต่ละ Service มี endpoint สองตัว. PVC research-data อยู่ในสถานะ Bound."),
+    "term-describe-deploy": ("kubectl describe deployment app-research", "หน้าต่างแสดงส่วนท้ายของผล: readiness probe, ตัวแปรแวดล้อม, จุด mount, volume สามตัว (ConfigMap สองตัวและ PVC) และ ReplicaSet ใหม่ที่สร้าง Pod ครบ 2/2."),
     "term-curl": ("ผลตอบกลับของทุก URL", "รหัส HTTP, ชนิดเนื้อหา และขนาด. คำขอใช้ --resolve ให้ชื่อโดเมนชี้ไปที่ IP ของ minikube."),
     "term-curl-security": ("HEAD, header ความปลอดภัย, การ escape HTML", "คำขอ HEAD ได้ 200. มี Content-Security-Policy และ X-Content-Type-Options. ข้อความ &lt;b&gt; ถูกแปลงเป็น &amp;lt;b&amp;gt;."),
     "term-linux-hosts": ("/etc/hosts ของ Linux (VM ของ minikube)", "เพิ่มบรรทัด hosts ใน /etc/hosts แล้ว curl ด้วยชื่อ www.id-624.com และ admin.id-624.com ตรง ๆ โดยไม่ใช้ --resolve. ได้ชื่อ Pod ของ app-about และ 302 ไป /edit."),
-    "term-lb": ("การกระจายคำขอไปยัง Pod", "ส่งคำขอ 8 ครั้งต่อบริการ. แต่ละบริการมี Pod สองตัวตอบตัวละ 4 ครั้ง."),
+    "term-lb": ("การกระจายคำขอไปยัง Pod", "ส่งคำขอ 8 ครั้งต่อบริการ. Pod ทั้งสองตัวของทุกบริการได้รับคำขอ. ตัวเลข Count คือจำนวนครั้งที่แต่ละ Pod ตอบ."),
 }
 GROUPS = [
     ("1. app-about", ["chrome-about"]), ("2. app-research", ["chrome-research"]), ("3. app-api", ["chrome-api-1", "chrome-api-2"]),
@@ -239,13 +235,12 @@ def test_evidence():
             n += 1
             head, text = CAP[name]
             figs += (f'<div class="fig"><img src="../screenshots/{meta[name]["file"]}"><div class="cap"><b>ภาพที่ {n}. {head}</b> '
-                     f'({meta[name]["time"]}). {text}</div></div>')
+                     f'{text}</div></div>')
     body = f"""
 <h1>ไฟล์ตรวจสอบการทดสอบการทำงาน</h1>
 <p>ภาพหน้าจอของทุกบริการ: id-624.com บน Kubernetes (Ingress)</p>
 <table class="meta">
 <tr><td>ผู้จัดทำ</td><td>ปฐมทัศน์ ภูวนกุลชัย ({AUTHOR}) รหัส 68130624</td></tr>
-<tr><td>วันที่ทดสอบ</td><td>{RES['time']}</td></tr>
 <tr><td>GitHub</td><td>{REPO_URL}</td></tr>
 <tr><td>ผลทดสอบ</td><td class="{'ok' if OK else 'bad'}">{SUMMARY}</td></tr>
 <tr><td>วิธีถ่ายภาพ</td><td>ภาพเป็นหน้าต่างจริงของ Chrome และ PowerShell ที่ถ่ายด้วย PrintWindow (ไม่ใช่ภาพทั้งหน้าจอ). Chrome ตั้ง host-resolver-rules ให้ www.id-624.com และ admin.id-624.com ชี้ไปที่ {RES['ip']} ซึ่งมีผลเท่ากับไฟล์ hosts. Chrome ถูกควบคุมผ่าน DevTools ตอนพิมพ์และกดบันทึก.</td></tr>

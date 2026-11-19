@@ -278,7 +278,7 @@ def main():
     meta_path = OUT / "shots.json"
     meta = json.loads(meta_path.read_text(encoding="utf-8")) if meta_path.exists() else {}
     shots = [
-        ("term-get", "kubectl get: node, Pod, Service, Deployment, Ingress, PVC, ConfigMap", [
+        ("term-get", "kubectl get: minikube, node, Deployment, Pod, Service, Ingress, PVC", [
             "minikube status", "kubectl get nodes -o wide", f"kubectl get deploy,pods,svc,ingress,pvc {ns} -o wide"]),
         ("term-describe-ingress", "kubectl describe ingress", [f"kubectl describe ingress {ns}"]),
         ("term-describe-svc", "kubectl describe svc, endpoints and PVC", [

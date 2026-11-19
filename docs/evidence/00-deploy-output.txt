@@ -1,4 +1,4 @@
-# output of deploy.cmd on 2026-11-19 (first deploy; the kubectl get listing at the end of the script is in 02-get.txt)
+# output of deploy.cmd on 2026-11-19 (first deploy). The script ends with kubectl get; a later snapshot of that listing is in 02-get.txt
 
 $ minikube addons enable ingress
 💡  ingress is an addon maintained by Kubernetes. For any concerns contact minikube on GitHub.

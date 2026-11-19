@@ -1,4 +1,4 @@
-# collected 2026-11-19 09:02:05
+# collected 2026-11-19 09:23:08
 
 $ minikube version
 minikube version: v1.38.1
@@ -26,14 +26,14 @@ minikube   Ready    control-plane   59d   v1.35.1   192.168.253.132   <none>    
 
 $ kubectl get ingressclass
 NAME    CONTROLLER             PARAMETERS   AGE
-nginx   k8s.io/ingress-nginx   <none>       30m
+nginx   k8s.io/ingress-nginx   <none>       51m
 
 $ kubectl get pods,svc -n ingress-nginx -o wide
 NAME                                            READY   STATUS      RESTARTS   AGE   IP            NODE       NOMINATED NODE   READINESS GATES
-pod/ingress-nginx-admission-create-wjmtm        0/1     Completed   0          30m   10.244.0.84   minikube   <none>           <none>
-pod/ingress-nginx-admission-patch-mtmqb         0/1     Completed   0          30m   10.244.0.85   minikube   <none>           <none>
-pod/ingress-nginx-controller-596f8778bc-94xr2   1/1     Running     0          30m   10.244.0.86   minikube   <none>           <none>
+pod/ingress-nginx-admission-create-wjmtm        0/1     Completed   0          51m   10.244.0.84   minikube   <none>           <none>
+pod/ingress-nginx-admission-patch-mtmqb         0/1     Completed   0          51m   10.244.0.85   minikube   <none>           <none>
+pod/ingress-nginx-controller-596f8778bc-94xr2   1/1     Running     0          51m   10.244.0.86   minikube   <none>           <none>
 
 NAME                                         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE   SELECTOR
-service/ingress-nginx-controller             NodePort    10.104.136.57   <none>        80:31003/TCP,443:32600/TCP   30m   app.kubernetes.io/component=controller,app.kubernetes.io/instance=ingress-nginx,app.kubernetes.io/name=ingress-nginx
-service/ingress-nginx-controller-admission   ClusterIP   10.97.56.213    <none>        443/TCP                      30m   app.kubernetes.io/component=controller,app.kubernetes.io/instance=ingress-nginx,app.kubernetes.io/name=ingress-nginx
+service/ingress-nginx-controller             NodePort    10.104.136.57   <none>        80:31003/TCP,443:32600/TCP   51m   app.kubernetes.io/component=controller,app.kubernetes.io/instance=ingress-nginx,app.kubernetes.io/name=ingress-nginx
+service/ingress-nginx-controller-admission   ClusterIP   10.97.56.213    <none>        443/TCP                      51m   app.kubernetes.io/component=controller,app.kubernetes.io/instance=ingress-nginx,app.kubernetes.io/name=ingress-nginx
