@@ -1,0 +1,14 @@
+# collected 2026-11-19 09:02:12
+
+$ minikube ssh -- cat /etc/hosts
+127.0.0.1	localhost
+127.0.1.1	minikube
+192.168.253.1	host.minikube.internal
+192.168.253.132	control-plane.minikube.internal
+192.168.253.132  www.id-624.com  admin.id-624.com
+
+$ minikube ssh -- curl -s http://www.id-624.com/about | grep -o 'pod app-[a-z0-9-]*'
+pod app-about-75b9c7b66c-vj6qj
+
+$ minikube ssh -- curl -s -o /dev/null -w '%{http_code} %{redirect_url}\n' http://admin.id-624.com/
+302 http://admin.id-624.com/edit

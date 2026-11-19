@@ -148,5 +148,18 @@
     "label": "www.id-624.com/research : still edited after the Pods were recreated",
     "url": "http://www.id-624.com/research",
     "time": "2026-11-19 08:54:34"
+  },
+  "term-linux-hosts": {
+    "file": "term-linux-hosts.png",
+    "kind": "terminal",
+    "label": "Linux /etc/hosts inside the minikube VM, then plain curl by name (no --resolve)",
+    "cmds": [
+      "minikube ssh -- \"head -2 /etc/os-release\"",
+      "minikube ssh -- \"grep -q id-624 /etc/hosts || echo '192.168.253.132  www.id-624.com  admin.id-624.com' | sudo tee -a /etc/hosts\"",
+      "minikube ssh -- \"cat /etc/hosts\"",
+      "minikube ssh -- \"curl -s http://www.id-624.com/about | grep -o 'pod app-[a-z0-9-]*'\"",
+      "minikube ssh -- \"curl -s -o /dev/null -w '%{http_code} %{redirect_url}\\n' http://admin.id-624.com/\""
+    ],
+    "time": "2026-11-19 09:01:45"
   }
 }

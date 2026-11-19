@@ -1,4 +1,4 @@
-# collected 2026-11-19 08:56:20
+# collected 2026-11-19 09:02:11
 
 $ kubectl describe ingress -n id624
 Name:             id624-admin
@@ -16,7 +16,7 @@ Annotations:        nginx.ingress.kubernetes.io/app-root: /edit
 Events:
   Type    Reason  Age                From                      Message
   ----    ------  ----               ----                      -------
-  Normal  Sync    15m (x2 over 16m)  nginx-ingress-controller  Scheduled for sync
+  Normal  Sync    21m (x2 over 22m)  nginx-ingress-controller  Scheduled for sync
 
 
 Name:             id624-www
@@ -37,4 +37,4 @@ Annotations:      <none>
 Events:
   Type    Reason  Age                From                      Message
   ----    ------  ----               ----                      -------
-  Normal  Sync    15m (x2 over 16m)  nginx-ingress-controller  Scheduled for sync
+  Normal  Sync    21m (x2 over 22m)  nginx-ingress-controller  Scheduled for sync

@@ -289,6 +289,12 @@ def main():
         ("term-curl-security", "HEAD request, security headers, HTML escaping", [
             h, "curl.exe -sI @h http://www.id-624.com/about",
             r"curl.exe -s @h http://www.id-624.com/api/%3Cb%3Ehi%3C%2Fb%3E | sls '<main[^>]*>.*?</main>' | % { $_.Matches.Value }"]),
+        ("term-linux-hosts", "Linux /etc/hosts inside the minikube VM, then plain curl by name (no --resolve)", [
+            'minikube ssh -- "head -2 /etc/os-release"',
+            f"minikube ssh -- \"grep -q id-624 /etc/hosts || echo '{ip}  www.id-624.com  admin.id-624.com' | sudo tee -a /etc/hosts\"",
+            'minikube ssh -- "cat /etc/hosts"',
+            "minikube ssh -- \"curl -s http://www.id-624.com/about | grep -o 'pod app-[a-z0-9-]*'\"",
+            "minikube ssh -- \"curl -s -o /dev/null -w '%{http_code} %{redirect_url}\\n' http://admin.id-624.com/\""]),
         ("term-lb", "Load balancing: replies per Pod (8 requests each)", [
             h, pods.format(url="http://www.id-624.com/about"), pods.format(url="http://www.id-624.com/research"),
             pods.format(url="http://www.id-624.com/api/x")]),

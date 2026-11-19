@@ -128,6 +128,10 @@ def main():
     save("03-describe-ingress.txt", [k("describe", "ingress", *NS)])
     save("04-describe-workload.txt", [k("describe", "svc", *NS), k("describe", "pvc", "research-data", *NS),
                                       k("describe", "deploy", "app-research", *NS)])
+    ssh = lambda c: ["minikube", "ssh", "--", c]
+    save("06-linux-hosts.txt", [ssh("cat /etc/hosts"),
+                                ssh("curl -s http://www.id-624.com/about | grep -o 'pod app-[a-z0-9-]*'"),
+                                ssh("curl -s -o /dev/null -w '%{http_code} %{redirect_url}\\n' http://admin.id-624.com/")])
     tests()
     save("05-logs.txt", [k("logs", "deploy/app-about", *NS, "--tail=5"), k("logs", "deploy/app-api", *NS, "--tail=5"),
                          k("logs", "deploy/app-research", *NS, "--tail=5")])

@@ -113,6 +113,7 @@ def report():
         ("ทดสอบ", "curl --resolve www.id-624.com:80:$(minikube ip) http://www.id-624.com/about", "หรือเปิด URL ในเบราว์เซอร์. ชุดทดสอบเต็ม: python tools/collect.py"),
         ("ลบทั้งหมดเมื่อไม่ใช้", "kubectl delete -k .", "ลบทุก resource ของ lab นี้ รวมถึง PVC และข้อความที่แก้ไว้."),
     ]
+    hosts_cmd = f"""$ minikube ssh -- "grep -q id-624 /etc/hosts || echo '{RES['ip']}  www.id-624.com  admin.id-624.com' | sudo tee -a /etc/hosts\""""
     steps_html = "".join(f"<h3>ขั้นที่ {i}. {t}</h3><p>{d}</p>{pre('$ ' + c)}" for i, (t, c, d) in enumerate(steps, 1))
     body = f"""
 <h1>รายงานการให้บริการด้วย Kubernetes ผ่าน Ingress</h1>
@@ -154,6 +155,10 @@ def report():
 <p>ชื่อ id-624.com ไม่มีใน DNS จริง. ไฟล์ hosts ของเครื่องที่เปิดเบราว์เซอร์ต้องชี้ทั้งสองชื่อไปที่ IP ของ minikube. Ingress เลือก backend จากหัว Host ของคำขอ.</p>
 {src('hosts.txt')}
 <p>ภาพหน้าจอและผลตรวจในรายงานนี้ไม่ได้แก้ไฟล์ hosts ของ Windows. ผู้จัดทำใช้ <code>curl --resolve</code> และ Chrome ที่ตั้ง <code>--host-resolver-rules</code> ให้สองชื่อชี้ไปที่ {RES['ip']}. ผลเหมือนกับการแก้ไฟล์ hosts เพราะคำขอที่ถึง Ingress เหมือนกันทุกประการ.</p>
+<h3>ทดสอบด้วย /etc/hosts ของ Linux จริง</h3>
+<p>VM ของ minikube เป็น Linux. ผู้จัดทำเพิ่มบรรทัดจาก hosts.txt ลงใน /etc/hosts ของ VM ด้วย <code>minikube ssh</code> แล้วใช้ curl เรียกด้วยชื่อโดเมนตรง ๆ โดยไม่ใช้ --resolve. ไฟล์ /etc/hosts ของ VM นี้กลับเป็นค่าเดิมเมื่อ VM รีสตาร์ต.</p>
+{pre(hosts_cmd)}
+{evidence('06-linux-hosts.txt')}
 
 <h2 class="pb">5. Kubernetes manifest</h2>
 <p>kustomization.yaml รวมทุกไฟล์และสร้าง ConfigMap สี่ชุด: about-code, research-code, research-seed, api-code.</p>
@@ -213,6 +218,7 @@ CAP = {
     "term-describe-deploy": ("kubectl describe deployment app-research", "replica, probe, securityContext, volume ทั้งสามตัว (ConfigMap สองตัวและ PVC)."),
     "term-curl": ("ผลตอบกลับของทุก URL", "รหัส HTTP, ชนิดเนื้อหา และขนาด. คำขอใช้ --resolve ให้ชื่อโดเมนชี้ไปที่ IP ของ minikube."),
     "term-curl-security": ("HEAD, header ความปลอดภัย, การ escape HTML", "คำขอ HEAD ได้ 200. มี Content-Security-Policy และ X-Content-Type-Options. ข้อความ &lt;b&gt; ถูกแปลงเป็น &amp;lt;b&amp;gt;."),
+    "term-linux-hosts": ("/etc/hosts ของ Linux (VM ของ minikube)", "เพิ่มบรรทัด hosts ใน /etc/hosts แล้ว curl ด้วยชื่อ www.id-624.com และ admin.id-624.com ตรง ๆ โดยไม่ใช้ --resolve. ได้ชื่อ Pod ของ app-about และ 302 ไป /edit."),
     "term-lb": ("การกระจายคำขอไปยัง Pod", "ส่งคำขอ 8 ครั้งต่อบริการ. แต่ละบริการมี Pod สองตัวตอบตัวละ 4 ครั้ง."),
 }
 GROUPS = [
@@ -220,7 +226,7 @@ GROUPS = [
     ("4. admin.id-624.com: แก้ไขและบันทึกกลับ", ["chrome-admin-1", "chrome-admin-2", "chrome-admin-3", "chrome-research-edited"]),
     ("5. ข้อมูลอยู่รอดเมื่อ Pod ถูกลบ", ["term-persist", "chrome-research-restart"]),
     ("6. kubectl get และ describe", ["term-get", "term-describe-ingress", "term-describe-svc", "term-describe-deploy"]),
-    ("7. curl และการกระจายคำขอ", ["term-curl", "term-curl-security", "term-lb"]),
+    ("7. curl, /etc/hosts ของ Linux และการกระจายคำขอ", ["term-curl", "term-curl-security", "term-linux-hosts", "term-lb"]),
 ]
 
 

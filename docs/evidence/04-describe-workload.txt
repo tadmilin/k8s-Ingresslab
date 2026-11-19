@@ -1,4 +1,4 @@
-# collected 2026-11-19 08:56:20
+# collected 2026-11-19 09:02:11
 
 $ kubectl describe svc -n id624
 Name:                     app-about
@@ -74,9 +74,9 @@ Used By:       app-research-5596f979d6-bdqrv
 Events:
   Type    Reason                 Age   From                                                                    Message
   ----    ------                 ----  ----                                                                    -------
-  Normal  ExternalProvisioning   16m   persistentvolume-controller                                             Waiting for a volume to be created either by the external provisioner 'k8s.io/minikube-hostpath' or manually by the system administrator. If volume creation is delayed, please verify that the provisioner is running and correctly registered.
-  Normal  Provisioning           16m   k8s.io/minikube-hostpath_minikube_815a42f3-ed1b-4a28-a003-46f8881f5ed6  External provisioner is provisioning volume for claim "id624/research-data"
-  Normal  ProvisioningSucceeded  16m   k8s.io/minikube-hostpath_minikube_815a42f3-ed1b-4a28-a003-46f8881f5ed6  Successfully provisioned volume pvc-d1d3ecfe-230c-4b43-aa10-9ec03fe4eb1c
+  Normal  ExternalProvisioning   22m   persistentvolume-controller                                             Waiting for a volume to be created either by the external provisioner 'k8s.io/minikube-hostpath' or manually by the system administrator. If volume creation is delayed, please verify that the provisioner is running and correctly registered.
+  Normal  Provisioning           22m   k8s.io/minikube-hostpath_minikube_815a42f3-ed1b-4a28-a003-46f8881f5ed6  External provisioner is provisioning volume for claim "id624/research-data"
+  Normal  ProvisioningSucceeded  22m   k8s.io/minikube-hostpath_minikube_815a42f3-ed1b-4a28-a003-46f8881f5ed6  Successfully provisioned volume pvc-d1d3ecfe-230c-4b43-aa10-9ec03fe4eb1c
 
 $ kubectl describe deploy app-research -n id624
 Name:                   app-research
@@ -137,12 +137,12 @@ NewReplicaSet:   app-research-5596f979d6 (2/2 replicas created)
 Events:
   Type    Reason             Age    From                   Message
   ----    ------             ----   ----                   -------
-  Normal  ScalingReplicaSet  16m    deployment-controller  Scaled up replica set app-research-6485c74784 from 0 to 2
-  Normal  ScalingReplicaSet  15m    deployment-controller  Scaled up replica set app-research-c85d668cf from 0 to 1
-  Normal  ScalingReplicaSet  15m    deployment-controller  Scaled down replica set app-research-6485c74784 from 2 to 1
-  Normal  ScalingReplicaSet  15m    deployment-controller  Scaled up replica set app-research-c85d668cf from 1 to 2
-  Normal  ScalingReplicaSet  15m    deployment-controller  Scaled down replica set app-research-6485c74784 from 1 to 0
-  Normal  ScalingReplicaSet  3m35s  deployment-controller  Scaled up replica set app-research-5596f979d6 from 0 to 1
-  Normal  ScalingReplicaSet  3m32s  deployment-controller  Scaled down replica set app-research-c85d668cf from 2 to 1
-  Normal  ScalingReplicaSet  3m32s  deployment-controller  Scaled up replica set app-research-5596f979d6 from 1 to 2
-  Normal  ScalingReplicaSet  3m30s  deployment-controller  Scaled down replica set app-research-c85d668cf from 1 to 0
+  Normal  ScalingReplicaSet  22m    deployment-controller  Scaled up replica set app-research-6485c74784 from 0 to 2
+  Normal  ScalingReplicaSet  21m    deployment-controller  Scaled up replica set app-research-c85d668cf from 0 to 1
+  Normal  ScalingReplicaSet  21m    deployment-controller  Scaled down replica set app-research-6485c74784 from 2 to 1
+  Normal  ScalingReplicaSet  21m    deployment-controller  Scaled up replica set app-research-c85d668cf from 1 to 2
+  Normal  ScalingReplicaSet  21m    deployment-controller  Scaled down replica set app-research-6485c74784 from 1 to 0
+  Normal  ScalingReplicaSet  9m27s  deployment-controller  Scaled up replica set app-research-5596f979d6 from 0 to 1
+  Normal  ScalingReplicaSet  9m24s  deployment-controller  Scaled down replica set app-research-c85d668cf from 2 to 1
+  Normal  ScalingReplicaSet  9m24s  deployment-controller  Scaled up replica set app-research-5596f979d6 from 1 to 2
+  Normal  ScalingReplicaSet  9m22s  deployment-controller  Scaled down replica set app-research-c85d668cf from 1 to 0
